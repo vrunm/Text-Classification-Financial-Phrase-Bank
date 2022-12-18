@@ -4,8 +4,7 @@
 | BERT | 3 | 86% |0.86|
 | DistilBert | 3 | 76% |0.74|
 
-Different values of alpha:This sentence uses `$` delimiters to show math inline:  $\sqrt{3x-1}+(1+x)^2$
-$\gamma$
+
 
 | Model | Epochs | Accuracy | F1 Score(Weighted) | Optimizer | Learning Rate $\gamma$| Momentum $\eta$ | Alpha $\alpha$ |
 | --- | --- | --- | --- | --- | --- | --- | --- |

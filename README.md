@@ -14,3 +14,30 @@ $\gamma$
 | FinBERT| 3 | 90.9% | 0.91 | SGD(Momentum)| 5e-5 | 0.001|
 | FinBERT| 3 | 90.9% | 0.91 | RMSprop | 0.01 | 0.01 | 0.99
 | FinBERT| 3 | 91.3222% | 0.91 | Adagrad | 5e-5 |
+
+Plotting the loss per epoch:
+<img src = "plots/loss_epoch.png">
+
+Plotting the log loss per epoch:
+<img src = "plots/loss_log_epoch.png">
+
+Plotting f1 score per epoch:
+<img src = "plots/loss_f1.png">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

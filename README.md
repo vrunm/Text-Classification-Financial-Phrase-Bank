@@ -29,11 +29,11 @@ Parameter settings:
 | FinBERT| 3 | 90.9% | 0.91 | RMSprop | 0.01 | 0.01 | 0.99
 | FinBERT| 3 | 91.3222% | 0.91 | Adagrad | 5e-5 |
 
-Plotting the loss per epoch:
-<img src = "loss_epoch.png">
+Plotting the loss per epoch for AdamW:
+<img src = "optim1_adam/1.loss_f1.png">
 
 Plotting the log loss per epoch:
-<img src = "loss_log_loss.png">
+<img src = "optim1_adam/2.loss_epoch.png">
 
 Plotting f1 score per epoch:
 <img src = "loss_f1.png">

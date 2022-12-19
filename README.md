@@ -1,3 +1,13 @@
+**Financial Phrase Bank dataset**:
+Polar sentiment dataset of sentences from financial news. The dataset consists of 4840 sentences from English language financial news categorised by sentiment. 
+
+The dataset contains two columns <br>
+**Sentiment**: The sentiment can be negative, neutral or positive.
+<br>
+**News Headline**: Headlines of the news articles.
+Predicting the sentiment based on the news headlines.
+
+
 | Model | Epochs | Accuracy | F1 Score(Weighted) |
 | --- | --- | --- | --- |
 | FinBERT| 3 | 90.9% | 0.91|

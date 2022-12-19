@@ -18,7 +18,7 @@ Plotting the loss per epoch:
 <img src = "loss_epoch.png">
 
 Plotting the log loss per epoch:
-<img src = "loss_log_epoch.png">
+<img src = "loss_log_loss.png">
 
 Plotting f1 score per epoch:
 <img src = "loss_f1.png">

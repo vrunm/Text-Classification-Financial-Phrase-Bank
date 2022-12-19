@@ -13,7 +13,8 @@ Parameter settings:
     warmup step 4000
     epoch 5
 
-Optimizer:AdamW
+Optimizer:**AdamW**
+<br>
 Plotting the loss per epoch for AdamW:
 <img src = "optim1_adam/1.loss_f1.png">
 
@@ -24,7 +25,9 @@ Plotting F1 score per epoch:
 <img src = "optim1_adam/3.loss_log.png">
 
 
-Optimizer:SGD
+Optimizer:**SGD**
+<br>
+
 Plotting the loss per epoch :
 <img src = "optim2_sgd/1.loss_f1.png">
 
@@ -34,7 +37,9 @@ Plotting the log loss per epoch:
 Plotting F1 score per epoch:
 <img src = "optim2_sgd/3.loss_log.png">
 
-Optimizer:SGD(Momentum)
+Optimizer:**SGD(Momentum)**
+<br>
+
 Plotting the loss per epoch for AdamW:
 <img src = "optim3_sgd_momentum/1.loss_f1.png">
 
@@ -44,7 +49,9 @@ Plotting the log loss per epoch:
 Plotting F1 score per epoch:
 <img src = "optim3_sgd_momentum/3.loss_log.png">
 
-Optimizer:RMSprop
+Optimizer:**RMSprop**
+<br>
+
 Plotting the loss per epoch :
 <img src = "optim4_rms_prop/1.loss_f1.png">
 
@@ -55,7 +62,9 @@ Plotting F1 score per epoch:
 <img src = "optim4_rms_prop/3.loss_log.png">
 
 
-Optimizer:Adagrad
+Optimizer:**Adagrad**
+<br>
+
 Plotting the loss per epoch :
 <img src = "optim5_adagrad/1.loss_f1.png">
 

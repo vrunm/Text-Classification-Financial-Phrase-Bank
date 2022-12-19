@@ -6,6 +6,7 @@ The dataset contains two columns <br>
 <br>
 **News Headline**: Headlines of the news articles.
 Predicting the sentiment based on the news headlines.
+<br>
 
 Parameter settings:
 

@@ -7,6 +7,11 @@ The dataset contains two columns <br>
 **News Headline**: Headlines of the news articles.
 Predicting the sentiment based on the news headlines.
 
+Parameter settings:
+
+    batch size 32
+    warmup step 4000
+    epoch 5
 
 | Model | Epochs | Accuracy | F1 Score(Weighted) |
 | --- | --- | --- | --- |

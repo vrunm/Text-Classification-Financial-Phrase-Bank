@@ -230,10 +230,10 @@ for epoch in tqdm(range(1, epochs+1)):
         loss_train_total += loss.item()
         loss.backward()
         
-        #Gradient Clipping is done to restrict the values of the gradient(To prevent the model from overfitting)
+        #Gradient Clipping is done to restrict the values of the gradient(To prevent the model from exploding gradients)
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
 
-        optimizer2.step()
+        optimizer1.step()
         scheduler.step()
         
         progress_bar.set_postfix({'training_loss': '{:.3f}'.format(loss.item()/len(batch))})

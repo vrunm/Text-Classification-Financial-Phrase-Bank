@@ -78,7 +78,7 @@ The results from all the text classification models have been summarized below:
 | BERT | 3 | 86% |0.86|
 | DistilBERT | 3 | 82% |0.81|
     
-The values learning rate and batch for the adam optimizer were taken from:
+The values learning rate for the adam optimizer and batch size of the model were taken from:
 [[1]](https://www.researchgate.net/publication/358284785_FinancialBERT_-_A_Pretrained_Language_Model_for_Financial_Text_Mining).
 [[2]](https://arxiv.org/pdf/1908.10063.pdf).
 

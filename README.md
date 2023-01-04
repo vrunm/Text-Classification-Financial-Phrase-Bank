@@ -87,7 +87,9 @@ The table lists out the different optimizers and their parameters used in traini
 
 Taking inspiration of the empirical comparison of optimizers in [[3]](https://arxiv.org/pdf/1910.05446.pdf) the FinBERT model has been fine tuned on different optimizers mentioned below:  
 
-Empirical Relations of optimizers has been used from:[[4]](https://arxiv.org/pdf/1705.08292.pdf) [[5]](https://arxiv.org/pdf/1705.07774.pdf)
+Empirical Relations of optimizers has been used from:
+[[4]](https://arxiv.org/pdf/1705.08292.pdf) 
+[[5]](https://arxiv.org/pdf/1705.07774.pdf)
 
     
 **Comparing the Training loss of all optimizers** for the fine tuned FinBERT model
@@ -99,17 +101,6 @@ Empirical Relations of optimizers has been used from:[[4]](https://arxiv.org/pdf
 <br>
 <img src = "val_loss_all_optim.png">
 
-**Comparing the Test loss of all optimizers** for the fine tuned FinBERT model.
-<br>
-<img src = "1.finbert_test_loss.png">
-
-**Comparing the Test loss of all optimizers** for the fine tuned DistilBERT model.
-<br>
-<img src = "1.distilbert_test_loss.png">
-
-**Comparing the Test loss of all optimizers** for the fine tuned BERT model.
-<br>
-<img src = "1.bert_test_loss.png">
 
 The rate of convergence of the Adam optimizer is the fastest.
 

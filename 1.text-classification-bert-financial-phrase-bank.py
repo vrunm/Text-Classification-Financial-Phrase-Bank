@@ -1,7 +1,4 @@
 
-import warnings
-warnings.filterwarnings('ignore') # to avoid warnings
-import random
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -26,75 +23,17 @@ Pytorch Libraries
 import torch
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
 
-def show_headline_distribution(sequence_lengths, figsize = (15,8)):
-    
-    # Get the percentage of reviews with length > 512
-    len_512_plus = [rev_len for rev_len in sequence_lengths if rev_len > 512]
-    percent = (len(len_512_plus)/len(sequence_lengths))*100
-    
-    print("Maximum Sequence Length is {}".format(max(sequence_lengths)))
-    
-    # Configure the plot size
-    plt.figure(figsize = figsize)
-
-    sns.set(style='darkgrid')
-    
-    # Increase information on the figure
-    sns.set(font_scale=1.3)
-    
-    # Plot the result
-    sns.distplot(sequence_lengths, kde = False, rug = False)
-    plt.title('Headlines Lengths Distribution')
-    plt.xlabel('Headlines Length')
-    plt.ylabel('Number of Headlines')
-
-
 # Load the dataset
 
 financial_data = pd.read_csv("https://raw.githubusercontent.com/vrunm/nlp-datasets/main/all-data.csv", 
                              encoding='latin-1', 
                              names=['sentiment', 'NewsHeadline'])
-
-def show_random_headlines(total_number, df):
-    
-    # Get the random number of reviews
-    n_reviews = df.sample(total_number)
-    
-    # Print each one of the reviews
-    for val in list(n_reviews.index):
-        print("Reviews #°{}".format(val))
-        print(" - Sentiment: {}".format(df.iloc[val]["sentiment"]))
-        print(" - News Headline: {}".format(df.iloc[val]["NewsHeadline"]))
-        print("")
-       
-
-# Increase information on the figure
-sns.set(font_scale=1.3)
-sns.countplot(x='sentiment', data = financial_data)
-plt.title('News Sentiment Distribution')
-plt.xlabel('News Polarity')
-plt.ylabel('Number of News')
-
-def get_headlines_len(df):
-    
-    headlines_sequence_lengths = []
-    
-    print("Encoding in progress...")
-    for headline in tqdm(df.NewsHeadline):
-        encoded_headline = finbert_tokenizer.encode(headline, 
-                                         add_special_tokens = True)
+                             
         
-        # record the length of the encoded review
-        headlines_sequence_lengths.append(len(encoded_headline))
-    print("End of Task.")
-    
-    return headlines_sequence_lengths
-    
-    
-#One hot encode the sentiment values
+#Label encode the sentiment values
 #The unique values in sentiment column are returned as a NumPy array.
 #Enumerate method adds counter to an iterable and returns it. The returned object is an enumerate object.
-#convert enumerate objects to list.
+#Convert enumerate objects to list.
 def encode_sentiments_values(df):
     
     possible_sentiments = df.sentiment.unique()
@@ -113,22 +52,12 @@ financial_data, sentiment_dict = encode_sentiments_values(financial_data)
 
 # Create training and validation data
 #Training set as 80% and test set as 20%
-#sklearn.model_selection.train_test_split(*arrays, test_size=None, train_size=None, random_state=None, shuffle=True, stratify=None)[source] )
-#test_size represent the proportion of the dataset to include in the test split. 
-#train_size represent the proportion of the dataset to include in the train split. I
 
 X_train, X_val, y_train, y_val = train_test_split(financial_data.index.values, 
                                                   financial_data.label.values, 
                                                   test_size = 0.20, 
                                                   random_state = 2022, 
                                                   stratify = financial_data.label.values)
-
-# Create the data type columns
-financial_data.loc[X_train, 'data_type'] = 'train'
-financial_data.loc[X_val, 'data_type'] = 'val'
-
-# Visualize the number of sentiment occurence on each type of data
-financial_data.groupby(['sentiment', 'label', 'data_type']).count()
 
 # Get the BERT Tokenizer
 finbert_tokenizer = BertTokenizer.from_pretrained("bert-base-uncased", do_lower_case=True)
@@ -187,11 +116,6 @@ dataset_val = TensorDataset(input_ids_val, attention_masks_val, sentiments_val)
 
 headlines_sequence_lengths = get_headlines_len(financial_data)
 
-'''
-# Show the reviews distribution 
-'''
-show_headline_distribution(headlines_sequence_lengths)
-
 ###Torch DataLoader
 #torch.utils.data.RandomSampler(data_source, replacement=False, num_samples=None, generator=None)
 #Samples elements randomly. If without replacement, then sample from a shuffled dataset. If with replacement, then user can specify num_samples to draw.
@@ -210,13 +134,11 @@ dataloader_train = DataLoader(dataset_train,
                               batch_size=batch_size)
 
 dataloader_validation = DataLoader(dataset_val, 
-                                   sampler=SequentialSampler(dataset_val), 
+                                   sampler=RandomSampler(dataset_val), 
                                    batch_size=batch_size)
  
 model = AutoModelForSequenceClassification.from_pretrained("bert-base-uncased",
-                                                          num_labels=len(sentiment_dict),
-                                                          output_attentions=False,
-                                                          output_hidden_states=False)
+                                                          num_labels=len(sentiment_dict))
    
 #To construct an Optimizer you have to give it an iterable containing the parameters (all should be Variable s) to optimize. Then, you can specify optimizer-specific options such as the learning rate, weight decay, etc.
 
@@ -307,7 +229,8 @@ for epoch in tqdm(range(1, epochs+1)):
         loss = outputs[0]
         loss_train_total += loss.item()
         loss.backward()
-
+        
+        #Gradient Clipping is done to restrict the values of the gradient(To prevent the model from overfitting)
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
 
         optimizer2.step()

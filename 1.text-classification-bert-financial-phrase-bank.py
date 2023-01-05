@@ -9,7 +9,7 @@ logging.set_verbosity_error()
 """
 Sklearn Libraries
 """
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, accuracy_score
 from sklearn.model_selection import train_test_split
 
 """
@@ -155,11 +155,6 @@ scheduler = get_linear_schedule_with_warmup(optimizer1,
                                             num_warmup_steps=0,
                                             num_training_steps=len(dataloader_train)*epochs)
 
-#Function to calculate the F1 score
-def f1_score_func(preds, labels):
-    preds_flat = np.argmax(preds, axis=1).flatten()
-    labels_flat = labels.flatten()
-    return f1_score(labels_flat, preds_flat, average='weighted')
 
 seed_val = 2022
 random.seed(seed_val)
@@ -246,25 +241,11 @@ for epoch in tqdm(range(1, epochs+1)):
     tqdm.write(f'Training loss: {loss_train_avg}')
     
     val_loss, predictions, true_vals = evaluate(dataloader_validation)
-    val_f1 = f1_score_func(predictions, true_vals)
+    val_f1 = f1_score(predictions, true_vals, average="weighted")
     tqdm.write(f'Validation loss: {val_loss}')
     tqdm.write(f'F1 Score (Weighted): {val_f1}')
 
 
-#Function to calculate the models accuracy
-
-def accuracy(preds,labels):  
-    label_dict_inverse = {v: k for k, v in sentiment_dict.items()}
-    
-    preds_flat = np.argmax(preds, axis=1).flatten()
-    labels_flat = labels.flatten()
-
-    acc = []
-    for label in np.unique(labels_flat):
-        y_preds = preds_flat[labels_flat==label]
-        y_true = labels_flat[labels_flat==label]
-        print(y_preds)
-        print(y_true)
 
 # Load the best model & Make Predictions
 
@@ -278,6 +259,5 @@ model.load_state_dict(torch.load('finetuned_BERT_epoch_1.model',
 
 _, predictions, true_vals = evaluate(dataloader_validation)
 
-accuracy_per_class(predictions, true_vals)
-accuracy(predictions,true_vals)
+print("Accuracy: ", accuracy_score(predictions, true_vals))
 

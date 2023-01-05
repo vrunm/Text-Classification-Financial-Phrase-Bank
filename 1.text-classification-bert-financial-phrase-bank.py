@@ -60,7 +60,7 @@ X_train, X_val, y_train, y_val = train_test_split(financial_data.index.values,
                                                   stratify = financial_data.label.values)
 
 # Get the BERT Tokenizer
-finbert_tokenizer = BertTokenizer.from_pretrained("bert-base-uncased", do_lower_case=True)
+tokenizer = BertTokenizer.from_pretrained("bert-base-uncased", do_lower_case=True)
 
 # Encode the Training and Validation Data
 #encode_plus method performs the following tasks:
@@ -83,8 +83,8 @@ finbert_tokenizer = BertTokenizer.from_pretrained("bert-base-uncased", do_lower_
 #max_length (int, optional, defaults to None) – If set to a number, will limit the total sequence returned so that it has a maximum length
 #150 is used since it is the maximum length observed in the headlines
 
-encoded_data_train = finbert_tokenizer.batch_encode_plus(
-    financial_data[financial_data.data_type=='train'].NewsHeadline.values, 
+encoded_data_train = tokenizer.batch_encode_plus(
+    X_train.NewsHeadline.values, 
     return_tensors='pt',
     add_special_tokens=True, 
     return_attention_mask=True, 
@@ -92,8 +92,8 @@ encoded_data_train = finbert_tokenizer.batch_encode_plus(
     max_length=150 
 )
 
-encoded_data_val = finbert_tokenizer.batch_encode_plus(
-    financial_data[financial_data.data_type=='val'].NewsHeadline.values, 
+encoded_data_val = tokenizer.batch_encode_plus(
+    X_val.NewsHeadline.values, 
     return_tensors='pt',
     add_special_tokens=True, 
     return_attention_mask=True, 
@@ -104,11 +104,11 @@ encoded_data_val = finbert_tokenizer.batch_encode_plus(
 
 input_ids_train = encoded_data_train['input_ids']
 attention_masks_train = encoded_data_train['attention_mask']
-labels_train = torch.tensor(financial_data[financial_data.data_type=='train'].label.values)
+labels_train = y_train.values)
 
 input_ids_val = encoded_data_val['input_ids']
 attention_masks_val = encoded_data_val['attention_mask']
-sentiments_val = torch.tensor(financial_data[financial_data.data_type=='val'].label.values)
+sentiments_val = y_val.values)
 
 
 dataset_train = TensorDataset(input_ids_train, attention_masks_train, labels_train)

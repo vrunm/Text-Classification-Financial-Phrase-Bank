@@ -114,7 +114,6 @@ sentiments_val = torch.tensor(financial_data[financial_data.data_type=='val'].la
 dataset_train = TensorDataset(input_ids_train, attention_masks_train, labels_train)
 dataset_val = TensorDataset(input_ids_val, attention_masks_val, sentiments_val)
 
-headlines_sequence_lengths = get_headlines_len(financial_data)
 
 ###Torch DataLoader
 #torch.utils.data.RandomSampler(data_source, replacement=False, num_samples=None, generator=None)
@@ -127,7 +126,7 @@ headlines_sequence_lengths = get_headlines_len(financial_data)
 #Samples elements sequentially, always in the same order.
 #data_source (Dataset) – dataset to sample from
 
-batch_size = 64
+batch_size = 32
 
 dataloader_train = DataLoader(dataset_train, 
                               sampler=RandomSampler(dataset_train), 
@@ -156,7 +155,7 @@ scheduler = get_linear_schedule_with_warmup(optimizer1,
                                             num_warmup_steps=0,
                                             num_training_steps=len(dataloader_train)*epochs)
 
-
+#Function to calculate the F1 score
 def f1_score_func(preds, labels):
     preds_flat = np.argmax(preds, axis=1).flatten()
     labels_flat = labels.flatten()

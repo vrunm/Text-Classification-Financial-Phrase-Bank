@@ -22,7 +22,7 @@ Predicting the sentiment based on the news headlines.
 ## Experiments:
 #### **BERT:**
 
-- A baseline was created using the BERT model. Training the model with an **Adam optimizer with learning rate of 5e-5** for **6 epochs** yielded an **Accuracy of 86% and an F1 Score of 0.86.**
+- A baseline was created using the BERT model. Training the model with an **Adam optimizer with learning rate of 5e-5** for **3 epochs** yielded an **Accuracy of 86% and an F1 Score of 0.86.**
 
 #### **DistilBERT**
 
@@ -30,12 +30,7 @@ Predicting the sentiment based on the news headlines.
 
 #### **FINBERT**
 
-- The FINBERT model was fine tuned on the data.Training the model with an **Adam optimizer** with learning rate of 5e-5,  for **6 epochs** yielded an **Accuracy of 90.91% and an F1 Score of 0.91.**
-Parameter settings:
-
-    batch size 32
-    warmup step 4000
-    epoch 5
+- The FINBERT model was fine tuned on the data.Training the model with an **Adam optimizer** with learning rate of 5e-5,  for **3 epochs** yielded an **Accuracy of 90.91% and an F1 Score of 0.91.**
 
 
 | Model | Epochs | Accuracy | F1 Score(Weighted) |
@@ -64,7 +59,7 @@ SGD          | 0.01 |              |      -             |     -           |     
 
 - **RMSprop** optimizer gets stuck in a local minima and takes longer to converge.
 
-- NAG,SGD and SGD with momentum take longer to converge.
+- Adagrad,SGD and SGD with momentum take longer to converge.
 
 ## Results:
 

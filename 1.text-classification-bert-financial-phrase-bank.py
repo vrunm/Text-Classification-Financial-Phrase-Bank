@@ -136,7 +136,7 @@ dataloader_validation = DataLoader(dataset_val,
                                    sampler=RandomSampler(dataset_val), 
                                    batch_size=batch_size)
  
-model = AutoModelForSequenceClassification.from_pretrained("bert-base-uncased",
+model = AutoModelForSequenceClassification.from_pretrained("ProsusAI/finbert",
                                                           num_labels=len(sentiment_dict))
    
 #To construct an Optimizer you have to give it an iterable containing the parameters (all should be Variable s) to optimize. Then, you can specify optimizer-specific options such as the learning rate, weight decay, etc.
@@ -268,10 +268,8 @@ def accuracy(preds,labels):
 
 # Load the best model & Make Predictions
 
-model = AutoModelForSequenceClassification.from_pretrained("bert-base-uncased",
-                                                          num_labels=len(sentiment_dict),
-                                                          output_attentions=False,
-                                                          output_hidden_states=False)
+model = AutoModelForSequenceClassification.from_pretrained(""ProsusAI/finbert"",
+                                                          num_labels=len(sentiment_dict))
 
 model.to(device)
 

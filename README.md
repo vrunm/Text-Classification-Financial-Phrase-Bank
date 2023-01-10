@@ -50,10 +50,10 @@ Predicting the sentiment based on the news headlines.
 Optimizer    | Learning Rate $\gamma$ |   Momentum $\eta$ | Alpha $\alpha$ | Beta1 $\beta_1$ | Beta2 $\beta_2$ | Epsilon $\epsilon$ |
 | ---        | ---                    | ---               | ---            | ---             | ---             | ---                |
 AdamW        | 5e-5                   | 0.01              | 0.9            | 0.9             | 0.999           | 1e-5               |
-RMSprop      | 0.01                   | 0.01              | 0.99           | -               | -               |  -                 |
+RMSprop      | 0.01                   | 0.01              | 0.99           | -               | -               | 1e-5                 |
 Adagrad      | 5e-5 |                 | -                 | -              | -               |-                | -                  |   
-SGD(Momentum)| 5e-5                | 0.001             | -              |  -                |-                   | -                  |
-SGD          | 0.01 |              |      -             |     -           |       -          |    -            |     -               |
+SGD(Momentum)| 5e-5                   | 0.001                | -              |  -           |-                | -                  |
+SGD          | 0.01 |                 |      -             |     -           |       -       |    -            |     -               |
 
 - **Adam** converged the fastest as the training loss became constant after certain epochs.
 

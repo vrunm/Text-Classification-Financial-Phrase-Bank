@@ -100,7 +100,7 @@ Empirical Relations of optimizers has been used from:
 The rate of convergence of the Adam optimizer is the fastest.
 
 We can conclude the order of convergence of the optimizers:
-AdamW > RMSprop > Adagrad > SGD (Momentum) > SGD
+AdamW > RMSprop > NAG > SGD (Momentum) > SGD
 
 References:
 

@@ -6,28 +6,15 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from transformers import logging
 logging.set_verbosity_error()
-"""
-Sklearn Libraries
-"""
 from sklearn.metrics import f1_score, accuracy_score
 from sklearn.model_selection import train_test_split
-
-"""
-Transformer Libraries
-"""
 from transformers import BertTokenizer,  AutoModelForSequenceClassification, AdamW, get_linear_schedule_with_warmup
-
-"""
-Pytorch Libraries
-"""
 import torch
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
 
 # Load the dataset
 
-financial_data = pd.read_csv("https://raw.githubusercontent.com/vrunm/nlp-datasets/main/all-data.csv", 
-                             encoding='latin-1', 
-                             names=['sentiment', 'NewsHeadline'])
+financial_data = pd.read_csv("financial_phrase_bank.csv",encoding='latin-1', names=['sentiment', 'NewsHeadline'])
                              
         
 #Label encode the sentiment values

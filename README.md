@@ -50,7 +50,7 @@ Optimizer    | Learning Rate $\gamma$ |   Momentum $\eta$ | Alpha $\alpha$ | Bet
 | ---        | ---                    | ---               | ---            | ---             | ---             | ---                |
 AdamW        | 5e-5                   | 0.01              | 0.9            | 0.9             | 0.999           | 1e-5               |
 RMSprop      | 0.01                   | 0.01              | 0.99           | -               | -               | 1e-5                 |
-Adagrad      | 5e-5 |                 | -                 | -              | -               |-                | -                  |   
+NAG          | 5e-5 |                 | -                 | -              | -               |-                | -                  |   
 SGD(Momentum)| 5e-5                   | 0.001                | -              |  -           |-                | -                  |
 SGD          | 0.01 |                 |      -             |     -           |       -       |    -            |     -               |
 

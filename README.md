@@ -58,7 +58,7 @@ SGD          | 0.01 |                 |      -             |     -           |  
 
 - **RMSprop** optimizer gets stuck in a local minima and takes longer to converge.
 
-- Adagrad,SGD and SGD with momentum take longer to converge.
+- **SGD** and **SGD with momentum** and **NAG** take longer to converge.
 
 ## Results:
 

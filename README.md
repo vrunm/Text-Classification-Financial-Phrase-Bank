@@ -1,6 +1,6 @@
 # Financial Phrase Bank Sentiment Analysis
 
-- Built a sentiment analysis model to predict the sentiment score of a financial news article
+- Built a sentiment analysis model to predict the sentiment score of a financial news article.
 - The data consists of 4845 english articles that were cateogorized by sentiment class and were annotated by 16 reasearchers with a financial background.
 - A BERT model was used as a baseline. The **FinBERT and DistilBERT** models were fine-tuned to get the best results.
 - The best results were obtained using the fine-tuned on the FINBERT model. It achieved an **Accuracy of 90.9%** and a **F1 Score** of 0.91. 

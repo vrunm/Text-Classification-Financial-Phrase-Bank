@@ -237,7 +237,7 @@ for epoch in tqdm(range(1, epochs+1)):
 # Load the best model & Make Predictions
 
 model = AutoModelForSequenceClassification.from_pretrained(""ProsusAI/finbert"",
-                                                          num_labels=len(sentiment_dict))
+                                                          num_labels=len(sentiment_dict)
 
 model.to(device)
 

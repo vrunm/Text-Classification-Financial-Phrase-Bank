@@ -88,12 +88,12 @@ Empirical Relations of optimizers has been used from:
     
 **Comparing the Training loss of all optimizers** for the fine tuned FinBERT model
 <br>
-<img src = "1.phrase_train_loss_all.png">
+<img src = "plots/1.phrase_train_loss_all.png">
 
 
 **Comparing the Validation loss of all optimizers** for the fine tuned FinBERT model
 <br>
-<img src = "1.phrase_val_loss_all.png">
+<img src = "plots/1.phrase_val_loss_all.png">
 
 
 The rate of convergence of the Adam optimizer is the fastest.

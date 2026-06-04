@@ -1,7 +1,7 @@
 # Financial Phrase Bank Sentiment Analysis
 
-- Built a sentiment analysis model to predict the sentiment score of a financial news article.
-- The data consists of 4845 English articles that were categorized by sentiment class and were annotated by 16 researchers with a financial background.
+- Built a sentiment analysis model to predict the sentiment of a financial news sentence.
+- The data consists of English financial news sentences categorised by sentiment (negative / neutral / positive) and annotated by 16 researchers with a financial background.
 - A BERT model was used as a baseline. The **FinBERT and DistilBERT** models were fine-tuned to get the best results.
 - The best results were obtained using the fine-tuned on the FINBERT model. It achieved an **Accuracy of 90.9%** and a **F1 Score** of 0.91.
 
@@ -25,36 +25,57 @@ python -m venv .venv && source .venv/bin/activate
 pip install -e .
 ```
 
-Download the dataset from the [Hugging Face Hub](https://huggingface.co/datasets/financial_phrasebank)
-and save it as `financial_phrase_bank.csv` (two columns: `sentiment`, `news_headline`).
+The dataset is downloaded automatically from the [Hugging Face Hub](https://huggingface.co/datasets/takala/financial_phrasebank)
+on the first run via the `datasets` library — no manual download required.
 
 ## Usage
 
 ```bash
 finbert-train \
-    --data financial_phrase_bank.csv \
+    --config sentences_allagree \
     --model ProsusAI/finbert \
     --epochs 3 \
     --batch-size 32
 ```
 
-Run `finbert-train --help` to see all options (learning rate, max sequence
-length, validation split, output directory, etc.). Checkpoints are written to
-`checkpoints/` after each epoch.
+The `--config` flag selects one of the four annotator-agreement subsets of the
+dataset (see below). Run `finbert-train --help` to see all options (learning
+rate, max sequence length, validation split, output directory, etc.).
+Checkpoints are written to `checkpoints/` after each epoch.
 
 ## Data:
 
-The Financial PhraseBank dataset consists of 4840 sentences from English language financial news categorised by sentiment.
-These sentences then were annotated by 16 people with background in finance and business.
-The dataset can be downloaded from [here](https://huggingface.co/datasets/financial_phrasebank).
+The [Financial PhraseBank](https://huggingface.co/datasets/takala/financial_phrasebank)
+dataset consists of sentences from English language financial news categorised
+by sentiment. The sentences were annotated by 16 people with a background in
+finance and business.
 
-The dataset contains two columns <br>
+The dataset is published on the Hugging Face Hub as
+`takala/financial_phrasebank` with two features:
 
-**Sentiment**: The sentiment can be negative, neutral or positive.
-<br>
-**News Headline**: Headlines of the news articles.
-Predicting the sentiment based on the news headlines.
-<br>
+- **sentence** (`string`): the financial news sentence.
+- **label** (`ClassLabel`): the sentiment, one of `negative` (0),
+  `neutral` (1) or `positive` (2).
+
+It is split into four configurations by the proportion of annotators that
+agreed on the label. Higher agreement means cleaner but fewer examples:
+
+| Config | Annotator agreement | Sentences |
+| ------ | ------------------- | --------- |
+| `sentences_50agree`  | ≥ 50%  | 4,846 |
+| `sentences_66agree`  | ≥ 66%  | 4,217 |
+| `sentences_75agree`  | ≥ 75%  | 3,453 |
+| `sentences_allagree` | 100%   | 2,264 |
+
+The dataset ships a single `train` split, so the script carves out a
+stratified validation set (controlled by `--val-size`, default 20%).
+
+```python
+from datasets import load_dataset
+
+ds = load_dataset("takala/financial_phrasebank", "sentences_allagree", split="train")
+print(ds[0])  # {'sentence': '...', 'label': 1}
+```
 
 ## Experiments:
 #### **BERT:**

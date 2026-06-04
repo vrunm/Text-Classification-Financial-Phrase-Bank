@@ -1,13 +1,16 @@
 """Fine-tune a transformer model for sentiment classification on the
 Financial PhraseBank dataset.
 
+The dataset is streamed directly from the Hugging Face Hub
+(``takala/financial_phrasebank``); no manual download is required.
+
 Example
 -------
-    finbert-train --data financial_phrase_bank.csv --model ProsusAI/finbert
+    finbert-train --config sentences_allagree --model ProsusAI/finbert
 
 or equivalently::
 
-    python -m finbert_sentiment.train --data financial_phrase_bank.csv
+    python -m finbert_sentiment.train --config sentences_allagree
 """
 
 from __future__ import annotations
@@ -18,6 +21,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+from datasets import load_dataset
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.model_selection import train_test_split
 from torch.utils.data import (
@@ -34,9 +38,16 @@ from transformers import (
     logging,
 )
 
-import pandas as pd
-
 logging.set_verbosity_error()
+
+DATASET_ID = "takala/financial_phrasebank"
+# Agreement-level configurations exposed by the Hub dataset.
+DATASET_CONFIGS = (
+    "sentences_50agree",
+    "sentences_66agree",
+    "sentences_75agree",
+    "sentences_allagree",
+)
 
 
 def set_seed(seed: int) -> None:
@@ -47,14 +58,21 @@ def set_seed(seed: int) -> None:
     torch.cuda.manual_seed_all(seed)
 
 
-def load_dataset(path: Path) -> tuple[pd.DataFrame, dict[str, int]]:
-    """Load the PhraseBank CSV and label-encode the sentiment column."""
-    df = pd.read_csv(
-        path, encoding="latin-1", names=["sentiment", "news_headline"]
-    )
-    labels = {value: idx for idx, value in enumerate(df.sentiment.unique())}
-    df["label"] = df.sentiment.map(labels)
-    return df, labels
+def load_phrasebank(
+    config: str,
+) -> tuple[list[str], np.ndarray, list[str]]:
+    """Load a Financial PhraseBank configuration from the Hugging Face Hub.
+
+    Returns the list of sentences, the integer-encoded labels, and the
+    ordered list of class names (index ``i`` is the name of label ``i``).
+    The ``label`` feature is already a :class:`~datasets.ClassLabel` with the
+    canonical mapping ``0=negative, 1=neutral, 2=positive``.
+    """
+    dataset = load_dataset(DATASET_ID, config, split="train")
+    label_names = dataset.features["label"].names
+    sentences = dataset["sentence"]
+    labels = np.array(dataset["label"], dtype=np.int64)
+    return sentences, labels, label_names
 
 
 def encode_texts(
@@ -114,26 +132,21 @@ def train(args: argparse.Namespace) -> None:
     set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    data, labels = load_dataset(Path(args.data))
-    train_df, val_df = train_test_split(
-        data,
+    sentences, labels, label_names = load_phrasebank(args.config)
+    train_texts, val_texts, train_labels, val_labels = train_test_split(
+        sentences,
+        labels,
         test_size=args.val_size,
         random_state=args.seed,
-        stratify=data.label.values,
+        stratify=labels,
     )
 
     tokenizer = BertTokenizer.from_pretrained(args.model, do_lower_case=True)
     dataset_train = build_dataset(
-        tokenizer,
-        train_df.news_headline.tolist(),
-        train_df.label.values,
-        args.max_length,
+        tokenizer, train_texts, train_labels, args.max_length
     )
     dataset_val = build_dataset(
-        tokenizer,
-        val_df.news_headline.tolist(),
-        val_df.label.values,
-        args.max_length,
+        tokenizer, val_texts, val_labels, args.max_length
     )
 
     dataloader_train = DataLoader(
@@ -148,7 +161,11 @@ def train(args: argparse.Namespace) -> None:
     )
 
     model = AutoModelForSequenceClassification.from_pretrained(
-        args.model, num_labels=len(labels)
+        args.model,
+        num_labels=len(label_names),
+        id2label=dict(enumerate(label_names)),
+        label2id={name: idx for idx, name in enumerate(label_names)},
+        ignore_mismatched_sizes=True,
     ).to(device)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, eps=1e-8)
@@ -207,9 +224,13 @@ def train(args: argparse.Namespace) -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--data",
-        default="financial_phrase_bank.csv",
-        help="Path to the PhraseBank CSV file.",
+        "--config",
+        default="sentences_allagree",
+        choices=DATASET_CONFIGS,
+        help=(
+            "Financial PhraseBank agreement-level configuration to load from "
+            "the Hugging Face Hub (takala/financial_phrasebank)."
+        ),
     )
     parser.add_argument(
         "--model",

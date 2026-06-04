@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "finbert-sentiment"
+version = "0.1.0"
+description = "Fine-tuning transformer models for sentiment classification on the Financial PhraseBank dataset."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "vrunm" }]
+keywords = ["nlp", "sentiment-analysis", "finbert", "bert", "transformers", "finance"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scikit-learn>=1.3",
+    "torch>=2.0",
+    "transformers>=4.30",
+    "tqdm>=4.65",
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+]
+
+[project.urls]
+Repository = "https://github.com/vrunm/Text-Classification-Financial-Phrase-Bank"
+
+[project.scripts]
+finbert-train = "finbert_sentiment.train:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
